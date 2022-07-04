@@ -1,13 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pessoa } from './Pessoa';
-
-const httpOptions = { 
-  headers: new HttpHeaders({
-    'Content-Type' : 'appplication/json'
-  })
-}
 
 @Injectable({
   providedIn: 'root'
@@ -22,21 +16,23 @@ url = 'https://localhost:7269/api/pessoa';
   }
 
   GetPessoasByIdAsync(pessoaId: number) : Observable<Pessoa> {
-    const apiUrl = '${this.url}/${pessoaId}';
+    const apiUrl = `${this.url}/${pessoaId}`;
     return this.http.get<Pessoa>(apiUrl);
   }
 
   SavePessoaAsync(pessoa: Pessoa) : Observable<any>{
-    return this.http.post<Pessoa>(this.url, pessoa, httpOptions);
+    return this.http.post<Pessoa>(this.url, pessoa);
   }
 
   UpdatePessoaAsync(pessoa: Pessoa) : Observable<any>{
-    return this.http.put<Pessoa>(this.url, pessoa, httpOptions);
+    return this.http.put<Pessoa>(this.url, pessoa);
   }
 
   DeletePessoaAsync(pessoaId: number) : Observable<any>{
-    const apiUrl = '${this.url}/${pessoaId}';
-    return this.http.delete<number>(apiUrl, httpOptions);
+    let params = new HttpParams().set('pessoaId', pessoaId);
+    let options = { params: params };
+
+    return this.http.delete<number>(this.url, options);
   }
-}
+  }
 

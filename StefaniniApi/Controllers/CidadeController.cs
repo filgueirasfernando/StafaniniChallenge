@@ -19,10 +19,10 @@ namespace StefaniniApi.Controllers
     }
 
     [HttpGet("{cidadeId}")]
-    public async Task<ActionResult<Cidade>> GetCidadesByIdAsync([FromServices] DataContext dataContext, int id)
+    public async Task<ActionResult<Cidade>> GetCidadesByIdAsync([FromServices] DataContext dataContext, int cidadeId)
     {
       if (ModelState.IsValid)
-        return await dataContext.Cidades.FirstOrDefaultAsync(x => x.CidadeId == id);
+        return await dataContext.Cidades.FirstOrDefaultAsync(x => x.CidadeId == cidadeId);
       else
         return BadRequest(ModelState);
     }
@@ -61,11 +61,11 @@ namespace StefaniniApi.Controllers
 
     [HttpDelete]
     [Route("")]
-    public async Task<ActionResult<Cidade>> DeleteCidadeAsync([FromServices] DataContext dataContext, int id)
+    public async Task<ActionResult<Cidade>> DeleteCidadeAsync([FromServices] DataContext dataContext, int cidadeId)
     {
       if (ModelState.IsValid)
       {
-        dataContext.Cidades.Remove(await dataContext.Cidades.FindAsync(id));
+        dataContext.Cidades.Remove(await dataContext.Cidades.FindAsync(cidadeId));
         await dataContext.SaveChangesAsync();
         return Ok();
       }
